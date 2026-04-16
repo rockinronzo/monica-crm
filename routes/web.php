@@ -136,6 +136,8 @@ use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTabVisibi
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTagController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsTemplateController;
 use App\Domains\Vault\ManageVaultSettings\Web\Controllers\VaultSettingsUserController;
+use App\Domains\Crm\Web\Controllers\CrmNoteController;
+use App\Domains\Crm\Web\Controllers\CrmSearchController;
 use App\Domains\Vault\Search\Web\Controllers\VaultContactSearchController;
 use App\Domains\Vault\Search\Web\Controllers\VaultMostConsultedContactsController;
 use App\Domains\Vault\Search\Web\Controllers\VaultSearchController;
@@ -731,6 +733,27 @@ Route::middleware([
             // cancel
             Route::get('cancel', [CancelAccountController::class, 'index'])->name('cancel.index');
             Route::put('cancel', [CancelAccountController::class, 'destroy'])->name('cancel.destroy');
+        });
+    });
+
+    // ──────────────────────────────────────────────────
+    // CRM — note-first personal CRM layer
+    // ──────────────────────────────────────────────────
+    Route::prefix('crm/{vault}')->middleware('can:vault-viewer,vault')->group(function () {
+
+        // Notes CRUD
+        Route::prefix('notes')->group(function () {
+            Route::get('', [CrmNoteController::class, 'index'])->name('crm.notes.index');
+            Route::post('', [CrmNoteController::class, 'store'])->name('crm.notes.store');
+            Route::get('{note}', [CrmNoteController::class, 'show'])->name('crm.notes.show');
+            Route::put('{note}', [CrmNoteController::class, 'update'])->name('crm.notes.update');
+            Route::delete('{note}', [CrmNoteController::class, 'destroy'])->name('crm.notes.destroy');
+        });
+
+        // Search endpoints for @mention and #hashtag autocomplete
+        Route::prefix('search')->group(function () {
+            Route::get('contacts', [CrmSearchController::class, 'contacts'])->name('crm.search.contacts');
+            Route::get('tags', [CrmSearchController::class, 'tags'])->name('crm.search.tags');
         });
     });
 
