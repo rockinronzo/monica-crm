@@ -6,13 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('relationship_origin')->nullable()->after('prefix');
+            $table->string('relationship_origin')->nullable()->after('last_name');
             $table->string('met_at')->nullable()->after('relationship_origin');
             $table->date('met_on')->nullable()->after('met_at');
             $table->uuid('introduced_by_contact_id')->nullable()->after('met_on');
@@ -20,15 +17,12 @@ return new class extends Migration
             $table->integer('interaction_frequency_days')->nullable()->after('last_interaction_at');
 
             $table->foreign('introduced_by_contact_id')
-                ->references('id')
-                ->on('contacts')
-                ->nullOnDelete();
+                  ->references('id')
+                  ->on('contacts')
+                  ->nullOnDelete();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('contacts', function (Blueprint $table) {
