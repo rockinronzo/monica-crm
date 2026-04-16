@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 return [
 
     /*
@@ -17,5 +19,21 @@ return [
     */
 
     'proxies' => env('APP_TRUSTED_PROXIES', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Trusted headers
+    |--------------------------------------------------------------------------
+    |
+    | Which headers to use when determining proxy-forwarded information.
+    | Caddy v2 sends the standard X-Forwarded-* headers by default.
+    |
+    */
+
+    'headers' => Request::HEADER_X_FORWARDED_FOR
+        | Request::HEADER_X_FORWARDED_HOST
+        | Request::HEADER_X_FORWARDED_PORT
+        | Request::HEADER_X_FORWARDED_PROTO
+        | Request::HEADER_X_FORWARDED_PREFIX,
 
 ];
