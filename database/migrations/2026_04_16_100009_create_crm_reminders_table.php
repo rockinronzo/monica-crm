@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('crm_reminders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('contact_id')->nullable();
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('contact_id')->nullable();
             $table->uuid('note_id')->nullable();
             $table->string('note_text');
             $table->date('remind_on');

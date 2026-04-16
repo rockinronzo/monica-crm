@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('crm_notes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('primary_contact_id')->nullable();
+            $table->unsignedInteger('account_id');
+$table->unsignedInteger('primary_contact_id')->nullable();
             $table->uuid('note_type_id')->nullable();
             $table->string('title')->nullable();
             $table->text('body');

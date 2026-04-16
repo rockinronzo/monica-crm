@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('crm_note_contacts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('note_id');
-            $table->unsignedBigInteger('contact_id');
+            $table->unsignedInteger('contact_id');
             $table->enum('role', ['primary', 'secondary'])->default('secondary');
             $table->timestamp('created_at')->nullable();
 

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('crm_tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('account_id');
+            $table->unsignedInteger('account_id');
             $table->string('name');
             $table->string('display_name');
             $table->timestamp('created_at')->nullable();
