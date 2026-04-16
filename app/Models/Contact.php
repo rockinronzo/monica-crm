@@ -64,6 +64,12 @@ class Contact extends VCardResource
         'distant_uri',
         'prefix',
         'suffix',
+        'relationship_origin',
+        'met_at',
+        'met_on',
+        'introduced_by_contact_id',
+        'last_interaction_at',
+        'interaction_frequency_days',
     ];
 
     /**
@@ -77,6 +83,10 @@ class Contact extends VCardResource
         'listed' => 'boolean',
         'show_quick_facts' => 'boolean',
         'last_updated_at' => 'datetime',
+        'met_on' => 'date',
+        'introduced_by_contact_id' => 'string',
+        'last_interaction_at' => 'datetime',
+        'interaction_frequency_days' => 'integer',
     ];
 
     /**
@@ -421,6 +431,56 @@ class Contact extends VCardResource
     public function lifeMetrics(): BelongsToMany
     {
         return $this->belongsToMany(LifeMetric::class, 'contact_life_metric', 'contact_id', 'life_metric_id')->withTimestamps();
+    }
+
+    /**
+     * Get the contact who introduced this contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Contact, $this>
+     */
+    public function introducedBy(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class, 'introduced_by_contact_id');
+    }
+
+    /**
+     * Get the contacts introduced by this contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Contact, $this>
+     */
+    public function peopleIntroduced(): HasMany
+    {
+        return $this->hasMany(Contact::class, 'introduced_by_contact_id');
+    }
+
+    /**
+     * Get the CRM notes where this contact is the primary contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CrmNote, $this>
+     */
+    public function crmNotes(): HasMany
+    {
+        return $this->hasMany(CrmNote::class, 'primary_contact_id');
+    }
+
+    /**
+     * Get the CRM contact facts associated with this contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CrmContactFact, $this>
+     */
+    public function crmContactFacts(): HasMany
+    {
+        return $this->hasMany(CrmContactFact::class);
+    }
+
+    /**
+     * Get the CRM note-contact junction records for this contact.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\CrmNoteContact, $this>
+     */
+    public function crmNoteContacts(): HasMany
+    {
+        return $this->hasMany(CrmNoteContact::class);
     }
 
     /**
