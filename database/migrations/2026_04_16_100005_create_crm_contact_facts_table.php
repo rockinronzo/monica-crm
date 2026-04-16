@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('crm_contact_facts', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedInteger('contact_id');
+            $table->uuid('contact_id');
             $table->uuid('note_id')->nullable();
             $table->string('label');
             $table->string('value');
